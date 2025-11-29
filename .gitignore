@@ -12,6 +12,12 @@
 !src/
 !src/**
 
+!scripts/
+!scripts/**
+
+!.vscode/
+!.vscode/**
+
 !.gitignore
 !deno.json
 !deno.jsonc

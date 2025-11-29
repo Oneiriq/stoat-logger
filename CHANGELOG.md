@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `no-slow-types` rule to `deno.json` to prevent slow type errors.
-- `stoat` to Deno ecosystem via [jsr](https://jsr.io/@albedosehen/stoat).
+- `stoat` to Deno ecosystem via [jsr](https://jsr.io/@oneiriq/stoat).
 
 ### Fixed
 
