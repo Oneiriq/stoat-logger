@@ -1,30 +1,22 @@
 # Stoat 🐹
 
-[![Build Status](https://img.shields.io/badge/Build-passing-brightgreen.svg)](https://github.com/albedosehen/stoat) [![Deno Version](https://img.shields.io/badge/Deno-v2.4.1-green)](https://deno.land/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![JSR](https://jsr.io/badges/@albedosehen/stoat)](https://jsr.io/@albedosehen/stoat)
+[![Build Status](https://img.shields.io/badge/Build-passing-brightgreen.svg)](https://github.com/oneiriq/stoat) [![Deno Version](https://img.shields.io/badge/Deno-v2.4.1-green)](https://deno.land/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![JSR](https://jsr.io/badges/@oneiriq/stoat)](https://jsr.io/@oneiriq/stoat)
 
 Stoat is a simple and modular logging framework with support for multiple transports.
 
 ---
-
-I designed this logger for use in my own applications, but I believe it can be useful in many others as well.
-
-## Where Stoat shines
-
-Stoat is particularly well-suited for high-throughput, performance-critical Deno applications that require structured logging, observability, and sanitization features.
 
 ## Core Features
 
 Originally developed as a structured logging framework, the stoat logger now supports a suite of common logging functionalities to support various logging needs.
 
 - **Structured Logging**: JSON-first, OpenTelemetry compatible
-- **Async Logging**: Zero-allocation paths for trading systems
-- **Fast Async Buffers**: Sub-millisecond logging for low-footprint applications
 - **File System Integration**: Efficient file-based logging with rotation and archival
 - **Contextual Logging**: Support hierarchical logging, request correlation, trace/span IDs, and application context
 - **Child Loggers**: Create child loggers with inherited context
 - **Observability & Tracing**: OpenTelemetry integration, rich context propagation
 - **Security Features**: Input sanitization, data classification, error-safe design
-- **Custom Serializer Engine**: Circular reference detection, TypeScript 5.x branded types
+- **Custom Serializer**: Circular reference detection, TypeScript 5.x branded types
 
 ---
 
@@ -32,24 +24,21 @@ Originally developed as a structured logging framework, the stoat logger now sup
 
 ### Performance
 
-Stoat offers memory-efficient logging with zero-allocation paths for simple log entries, making it ideal for low-footprint applications. It supports automatic backpressure management and intelligent buffering to handle memory pressure without blocking.
+Stoat offers memory-efficient logging with zero-allocation paths for simple log entries, making it ideal for low-footprint applications.
 
-- **Backpressure Management**: Intelligent buffering and memory pressure detection
 - **Dynamic Log Levels**: Custom log levels with advanced management
 - **Modular Transport Systems**: Console, file, HTTP, WebSocket, and custom transports for integration
 - **Safe Fallbacks**: Fallbacks for sync logging under memory pressure
 
-## **Security & Reliability**
+### **Security & Reliability**
 
 A strong emphasis on security, reliability, and best practices went into ensuring safe logging in production environments.
 
 - **Input Sanitization** with configurable redaction policies
 - **Data Classification** (sensitive data marking and handling)
 - **Error-Safe Design** (never throws, graceful fallbacks)
-- **Comprehensive Test Suite** (439+ successful test steps)
-- **Production-Ready** with extensive error handling
 
-## **Observability & Tracing**
+### **Observability & Tracing**
 
 It also easily integrates with OpenTelemetry for distributed tracing, making it suitable for microservices and complex architectures.
 
@@ -66,7 +55,7 @@ It also easily integrates with OpenTelemetry for distributed tracing, making it 
 ### Basic Usage
 
 ```typescript
-import { stoat } from '@albedosehen/stoat'
+import { stoat } from '@oneiriq/stoat'
 
 const logger = stoat.create({
   level: 'info',
@@ -79,6 +68,13 @@ logger.warn('High process count', { process: 'app.exe', usage: 73 })
 logger.error('Order execution failed', { orderId: 'ORD-123', error: 'timeout' })
 ```
 
+### Example Output
+
+```shell
+2025-07-25T21:13:50.918Z INFO  [session:7fe340ff module:basic-stoat-examples_fileLogger] This goes to both console and file
+2025-07-25T21:13:50.919Z ERROR [session:7fe340ff module:basic-stoat-examples_fileLogger] Error logged to file | {"error":"database_error"}
+```
+
 ### Advanced Logging with `LogEntry`
 
 ```typescript
@@ -87,7 +83,7 @@ import {
   StructuredLogger,
   createAsyncLogger,
   ASYNC_CONFIGS
-} from '@albedosehen/stoat'
+} from '@oneiriq/stoat'
 
 const structuredLogger = new StructuredLogger({
   pretty: true,
@@ -126,7 +122,7 @@ console.log(jsonOutput)
 ### Async Logging
 
 ```typescript
-// async loggers for trading systems
+// async loggers
 const asyncLogger = createAsyncLogger(
   ASYNC_CONFIGS.trading,
   (entry) => {
@@ -199,41 +195,12 @@ const result = serializer.serialize(complexTradingObject)
 console.log(`Serialized in ${result.serializationTime}ms`)
 ```
 
-### TypeScript Branded Types
-
-```typescript
-import {
-  createTraceId,
-  createOrderId,
-  createSymbol,
-  markSensitive
-} from '@albedosehen/stoat/types'
-
-// Compile-time type safety with branded types
-const traceId = createTraceId('trace-abc-123')
-const orderId = createOrderId('ORD-456')
-const symbol = createSymbol('NVDA')
-
-// Security classification
-const sensitiveData = markSensitive({
-  apiKey: 'secret-key',
-  customerPII: 'sensitive-info'
-})
-
-logger.info('Order processed', {
-  traceId,      // Type: TraceId (not just string)
-  orderId,      // Type: OrderId
-  symbol,       // Type: Symbol
-  sensitive: sensitiveData // Will be automatically redacted
-})
-```
-
 ---
 
-## Complete Example
+## Stoat Example
 
 ```typescript
-import { stoat } from '@albedosehen/stoat'
+import { stoat } from '@oneiriq/stoat'
 
 // Rich development logger with pretty-printing
 const devLogger = stoat.create({
@@ -285,7 +252,7 @@ For more, see the **examples/** directory.
 ### Data Sanitization & Redaction
 
 ```typescript
-import { createSanitizer } from '@albedosehen/stoat/security'
+import { createSanitizer } from '@oneiriq/stoat/security'
 
 const logger = stoat.create({
   security: {
@@ -316,7 +283,7 @@ logger.info('User login', {
 ### Type-Safe Security Classification
 
 ```typescript
-import { markSensitive, createSanitized } from '@albedosehen/stoat/types'
+import { markSensitive, createSanitized } from '@oneiriq/stoat/types'
 
 // Compile-time security classification
 const customerData = markSensitive({
@@ -334,92 +301,27 @@ logger.info('Customer profile updated', {
 })
 ```
 
-## 📊 Performance Benchmarks
-
-### Async Logging Performance
-
-```text
-Low-Footprint Scenario (100,000 entries):
-├── Sync Logging:    ~2,847ms
-├── Async Logging:   ~156ms    (18x faster)
-├── Fast Path:       ~23ms     (124x faster)
-└── Memory Usage:    <50MB
-
-Data Processing (1M entries/sec):
-├── Latency P50:     0.02ms
-├── Latency P95:     0.08ms
-├── Latency P99:     0.15ms
-├── Memory Pressure: Auto-sync fallback at 50MB
-└── Zero-Allocation: Fast path for simple entries
-```
-
-### Serialization Performance
-
-```text
-Complex Object Serialization:
-├── Standard JSON.stringify:     ~45ms
-├── STOAT Custom Serializer:     ~12ms    (3.7x faster)
-├── STOAT Fast Path:             ~2ms     (22x faster)
-├── Circular Reference Handling: ✅ Safe
-└── Trading Type Support:        ✅ Optimized
-```
-
-## 🧪 Testing & Reliability
-
-Comprehensive tests covering all aspects of the library:
-
-- **Core Functionality**: All logging levels, configuration, child loggers
-- **Structured Logging**: OpenTelemetry compatibility, custom serialization
-- **Async Performance**: Low-footprint scenarios, backpressure handling
-- **Transport System**: Console, file, HTTP, custom transports
-- **Security**: Data sanitization, input validation, size limits
-- **Error Handling**: Graceful fallbacks, never-throw guarantees
-- **Memory Management**: Leak prevention, circular reference detection
-- **Low-Footprint Scenarios**: optimizations, millisecond precision
-
-```bash
-# Run complete test suite
-deno test --allow-read --allow-write --allow-net
-
-# Run with coverage
-deno test --coverage=coverage/ --allow-read --allow-write --allow-net
-deno coverage coverage/ --html
-
-# Performance benchmarks
-deno bench --allow-read --allow-write
-```
-
----
-
-## Contributing
-
-I welcome contributions! Please submit a pull request or open an issue for discussion.
-
-### Development Setup
+## Development
 
 ```bash
 # Clone repository
-git clone https://github.com/albedosehen/stoat.git
+git clone https://github.com/oneiriq/stoat.git
 cd stoat
 
 # Run tests
-deno test --allow-read --allow-write --allow-net
+deno task test
 
 # Run benchmarks
-deno bench --allow-read --allow-write
+deno task bench
 
 # Format code
-deno fmt
+deno task fmt
 
 # Lint code
-deno lint
+deno task lint
 ```
 
 ---
-
-## Support
-
-Open an issue on GitHub for any questions, bugs, or feature requests.
 
 ## License
 
