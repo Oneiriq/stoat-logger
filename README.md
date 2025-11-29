@@ -1,24 +1,14 @@
-# Stoat 🐹
+# Stoat Logger 🐹
 
-[![Build Status](https://img.shields.io/badge/Build-passing-brightgreen.svg)](https://github.com/oneiriq/stoat) [![Deno Version](https://img.shields.io/badge/Deno-v2.4.1-green)](https://deno.land/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![JSR](https://jsr.io/badges/@oneiriq/stoat)](https://jsr.io/@oneiriq/stoat)
+[![Build Status](https://img.shields.io/badge/Build-passing-brightgreen.svg)](https://github.com/oneiriq/stoat-logger) [![Deno Version](https://img.shields.io/badge/Deno-v2.4.1-green)](https://deno.land/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![JSR](https://jsr.io/badges/@oneiriq/stoat-logger)](https://jsr.io/@oneiriq/stoat-logger)
 
 Stoat is a simple and modular logging framework with support for multiple transports.
 
 ---
 
-## Core Features
+## Features
 
-Originally developed as a structured logging framework, the stoat logger now supports a suite of common logging functionalities to support various logging needs.
-
-- **Structured Logging**: JSON-first, OpenTelemetry compatible
-- **File System Integration**: Efficient file-based logging with rotation and archival
-- **Contextual Logging**: Support hierarchical logging, request correlation, trace/span IDs, and application context
-- **Child Loggers**: Create child loggers with inherited context
-- **Observability & Tracing**: OpenTelemetry integration, rich context propagation
-- **Security Features**: Input sanitization, data classification, error-safe design
-- **Custom Serializer**: Circular reference detection, TypeScript 5.x branded types
-
----
+Originally developed as a structured logging framework, the Stoat Logger now supports a suite of common logging functionalities to support various logging needs such as FS integration, child loggers, observability/tracing, and custom serialization.
 
 ## Additional Features
 
@@ -43,10 +33,9 @@ A strong emphasis on security, reliability, and best practices went into ensurin
 It also easily integrates with OpenTelemetry for distributed tracing, making it suitable for microservices and complex architectures.
 
 - **OpenTelemetry Integration** (trace/span correlation)
-- **Rich Context Propagation** for microservices
+- **Rich Context Propagation** for logging within microservices
 - **Request Correlation** across distributed systems
 - **Performance Timing** with built-in operation tracking
-- **Memory Usage Monitoring** with automatic optimization
 
 ---
 
@@ -55,7 +44,7 @@ It also easily integrates with OpenTelemetry for distributed tracing, making it 
 ### Basic Usage
 
 ```typescript
-import { stoat } from '@oneiriq/stoat'
+import { stoat } from '@oneiriq/stoat-logger'
 
 const logger = stoat.create({
   level: 'info',
@@ -83,7 +72,7 @@ import {
   StructuredLogger,
   createAsyncLogger,
   ASYNC_CONFIGS
-} from '@oneiriq/stoat'
+} from '@oneiriq/stoat-logger'
 
 const structuredLogger = new StructuredLogger({
   pretty: true,
@@ -200,7 +189,7 @@ console.log(`Serialized in ${result.serializationTime}ms`)
 ## Stoat Example
 
 ```typescript
-import { stoat } from '@oneiriq/stoat'
+import { stoat } from '@oneiriq/stoat-logger'
 
 // Rich development logger with pretty-printing
 const devLogger = stoat.create({

@@ -12,9 +12,9 @@ await build({
     deno: true,
   },
   package: {
-    name: '@oneiriq/stoat',
-    version: Deno.args[0] || '1.0.2',
-    description: 'Stoat is a simple and modular logging framework with support for multiple transports for Deno and NodeJS.',
+    name: '@oneiriq/stoat-logger',
+    version: Deno.args[0] || '1.1.2',
+    description: 'Stoat Logger is a simple and modular logging framework with support for multiple transports for Deno and NodeJS.',
     license: 'MIT',
     author: {
       name: 'oneiriq',
@@ -24,29 +24,41 @@ await build({
     },
     repository: {
       type: 'git',
-      url: 'git+https://github.com/oneiriq/stoat.git',
+      url: 'git+https://github.com/oneiriq/stoat-logger.git',
     },
     bugs: {
-      url: 'https://github.com/oneiriq/stoat/issues',
+      url: 'https://github.com/oneiriq/stoat-logger/issues',
     },
-    homepage: 'https://github.com/oneiriq/stoat#readme',
+    homepage: 'https://github.com/oneiriq/stoat-logger#readme',
     keywords: [
-      'surrealdb',
-      'query-builder',
-      'database',
-      'typescript',
+      'child-logger',
+      'context',
       'deno',
+      'framework',
+      'json',
+      'log',
+      'logger',
+      'logging',
+      'microservices',
+      'monitoring',
       'nodejs',
-      'type-safe',
-      'fluent-api',
-      'orm',
+      'observability',
+      'opentelemetry',
+      'otel',
+      'performance',
+      'sanitization',
+      'serialization',
+      'structured-logging',
+      'tracing',
+      'transports',
+      'typescript',
+      'file-logger',
+      'console-logger'
     ],
     engines: {
       node: '>=18.0.0',
     },
-    dependencies: {
-      'surrealdb': '^1.3.2',
-    }
+    dependencies: { },
   },
   postBuild() {
     // Copy important files to npm directory

@@ -1,0 +1,2 @@
+2025-07-25T21:13:50.918Z INFO  [session:7fe340ff module:basic-stoat-examples_fileLogger] This goes to both console and file
+2025-07-25T21:13:50.919Z ERROR [session:7fe340ff module:basic-stoat-examples_fileLogger] Error logged to file | {"error":"database_error"}
