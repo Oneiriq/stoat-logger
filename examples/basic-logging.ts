@@ -33,7 +33,7 @@ moduleLogger.info('Console-Only Logging (Default Transport)')
 const debugLogger = stoat.create({
   level: 'debug',
   metadata: {
-    context: 'console-only-example',
+    context: 'console-only-example'
   }
 })
 
