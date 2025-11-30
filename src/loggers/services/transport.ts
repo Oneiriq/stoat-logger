@@ -191,7 +191,7 @@ export abstract class BaseTransport implements Transport {
   /** Internal buffer for log entries. */
   protected _buffer: StructuredLogEntry[] = []
   /** Timer ID for automatic buffer flushing. */
-  protected _flushTimer?: number
+  protected _flushTimer?: ReturnType<typeof setInterval>
 
   /** Creates a new BaseTransport instance with the provided configuration. */
   constructor(public readonly config: BaseTransportConfig) {
