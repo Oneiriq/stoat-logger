@@ -13,7 +13,7 @@ await build({
   },
   package: {
     name: '@oneiriq/stoat-logger',
-    version: Deno.args[0] || '1.1.0',
+    version: Deno.args[0] || '1.1.1',
     description: 'Stoat Logger is a simple and modular logging framework with support for multiple transports for Deno and NodeJS.',
     license: 'MIT',
     author: {
@@ -87,4 +87,4 @@ await build({
   },
 })
 
-console.log('\nNPM package build completed. Output: ./npm')
+console.log('\nNPM package build completed.\n')

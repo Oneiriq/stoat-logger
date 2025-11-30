@@ -8,6 +8,14 @@ import type { StructuredLogEntry } from './structured-log-entry.ts'
 import { createErrorContext, PerformanceError } from '../errors/errors.ts'
 
 /**
+ * Browser-specific globalThis interface
+ */
+interface BrowserGlobalThis {
+  addEventListener?: (event: string, handler: () => void) => void
+  removeEventListener?: (event: string, handler: () => void) => void
+}
+
+/**
  * Branded type for async logger entries
  *
  * This type is used to ensure that all entries logged through the async logger
@@ -179,7 +187,7 @@ export type FlushStrategy = 'immediate' | 'batch' | 'interval' | 'hybrid'
  */
 export class StoatAsyncLogger {
   private buffer: BufferEntry[] = []
-  private flushTimer: number | null = null
+  private flushTimer: ReturnType<typeof setInterval> | null = null
   private isDestroyed = false
   private isFlushing = false
   private flushPromise: Promise<void> | null = null
@@ -193,7 +201,7 @@ export class StoatAsyncLogger {
   private syncCallback?: (entry: StructuredLogEntry) => void
   private exitHandler?: () => void
   private signalListenersAdded = false
-  private retryTimeouts: Set<number> = new Set()
+  private retryTimeouts: Set<ReturnType<typeof setTimeout>> = new Set()
 
   /** Creates a new AsyncLogger instance with the provided configuration and optional sync callback. */
   constructor(config: AsyncConfig, syncCallback?: (entry: StructuredLogEntry) => void) {
@@ -470,9 +478,13 @@ export class StoatAsyncLogger {
     }
 
     // Remove browser event listeners
-    if (this.exitHandler && typeof globalThis.removeEventListener === 'function') {
+    const browserGlobal = globalThis as unknown as BrowserGlobalThis
+    if (
+      this.exitHandler && 'removeEventListener' in globalThis &&
+      typeof browserGlobal.removeEventListener === 'function'
+    ) {
       try {
-        globalThis.removeEventListener('beforeunload', this.exitHandler)
+        browserGlobal.removeEventListener('beforeunload', this.exitHandler)
       } catch {
         // Ignore errors when removing event listeners
       }
@@ -809,8 +821,9 @@ export class StoatAsyncLogger {
       }
 
       // Browser/universal exit handling
-      if (typeof globalThis.addEventListener === 'function') {
-        globalThis.addEventListener('beforeunload', this.exitHandler)
+      const browserGlobal = globalThis as unknown as BrowserGlobalThis
+      if ('addEventListener' in globalThis && typeof browserGlobal.addEventListener === 'function') {
+        browserGlobal.addEventListener('beforeunload', this.exitHandler)
       }
     }
   }
