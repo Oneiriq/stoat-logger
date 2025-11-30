@@ -23,8 +23,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: [check, test]
     uses: ./.github/workflows/publish-npm.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     permissions:
       contents: read
       id-token: write
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

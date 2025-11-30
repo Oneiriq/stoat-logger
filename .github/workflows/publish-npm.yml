@@ -1,5 +1,24 @@
 name: Publish to npm
 
+# This workflow publishes the package to npm automatically when code is merged to main.
+#
+# REQUIRED SECRET: NPM_TOKEN
+# - This must be an npm Automation Token or Granular Access Token
+# - The token MUST have the "Automation" setting enabled to bypass 2FA/OTP requirements
+# - To create this token:
+#   1. Log in to npmjs.com
+#   2. Go to Account Settings > Access Tokens
+#   3. Click "Generate New Token" > "Granular Access Token" (recommended)
+#   4. Set permissions: Read and write access to the package
+#   5. Enable "Automation" to bypass 2FA
+#   6. Copy the token and add it to GitHub:
+#      Repository Settings > Secrets and variables > Actions > New repository secret
+#      Name: NPM_TOKEN
+#      Value: <paste your token>
+#
+# Note: Classic tokens with "Automation" type also work, but Granular Access Tokens
+# provide better security with more limited scope.
+
 on:
   workflow_call:
     secrets:
